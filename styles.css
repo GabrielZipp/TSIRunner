@@ -1,0 +1,186 @@
+:root {
+    /* Variáveis Globais */
+    --game-width: 800px;
+    --game-height: 400px;
+    --player-frame-size: 50px; /* Largura e Altura de um quadro na sprite sheet */
+    --player-sheet-width: 300px; /* 6 quadros * 50px = 300px */
+    --ground-height: 20px;
+    --ground-level: calc(var(--game-height) - var(--ground-height) - var(--player-frame-size));
+    --obstacle-size: 30px;
+    --main-color: #333;
+    --accent-color: #007bff;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: monospace;
+    background-color: #f0f0f0;
+    /* ALTERAÇÃO 4: Removido 'overflow: hidden;' para compatibilidade de tela */
+}
+
+/* --- Container Principal do Jogo --- */
+#game-container {
+    position: relative;
+    width: var(--game-width);
+    height: var(--game-height);
+    overflow: hidden;
+    border: 3px solid var(--main-color);
+    background-color: #e6f7ff;
+    transition: opacity 1.5s ease-in-out; 
+}
+
+.fade-out {
+    opacity: 0;
+}
+
+/* --- Elementos de Fundo e Chão (Inalterado) --- */
+
+#ground {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: var(--ground-height);
+    background: linear-gradient(to bottom, #4CAF50, #388E3C);
+    z-index: 10;
+}
+
+#background-scroll {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%; 
+    height: 100%;
+    background: 
+        repeating-linear-gradient(90deg, #cceeff 0, #cceeff 100px, #b3e6ff 100px, #b3e6ff 200px);
+    z-index: 1;
+    will-change: transform;
+    animation: slide 5s linear infinite; 
+}
+
+@keyframes slide {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(calc(-1 * var(--game-width)), 0, 0); }
+}
+
+
+/* --- Personagem (Configuração Sprite Sheet) --- */
+
+#player {
+    position: absolute;
+    bottom: var(--player-frame-size); 
+    left: 50px;
+    width: var(--player-frame-size);
+    height: var(--player-frame-size);
+    z-index: 20;
+    
+    /* Configurações da Sprite */
+    background-image: url('character.png');
+    background-repeat: no-repeat;
+    background-size: var(--player-sheet-width) var(--player-frame-size); /* 300px x 50px */
+    
+    transform: translate3d(0, 0, 0); 
+    transition: transform 0.1s linear; 
+}
+
+/* Animação de Corrida (4 quadros) */
+.player-run {
+    animation: run-cycle 0.4s steps(4, end) infinite; 
+    background-size: var(--player-sheet-width) var(--player-frame-size); 
+}
+
+/* Keyframes: Move a background-position para a esquerda, passando pelos 4 quadros de corrida */
+@keyframes run-cycle {
+    from { background-position: 0px 0px; }
+    to { background-position: calc(-4 * var(--player-frame-size)) 0px; } 
+}
+
+/* Classe de Pulo (W): Quadro estático na posição X = -200px (5º quadro) */
+.player-jump {
+    animation: none;
+    background-position: calc(-4 * var(--player-frame-size)) 0px; 
+}
+
+/* Classe de Agachamento (S): Quadro estático na posição X = -250px (6º quadro) */
+.player-duck {
+    animation: none;
+    height: calc(var(--player-frame-size) / 2); /* Reduz a caixa de colisão pela metade */
+    background-position: calc(-5 * var(--player-frame-size)) 0px; 
+    /* Ajuste visual para manter a base */
+    transform: translateY(calc(var(--player-frame-size) / 2)); 
+}
+
+
+/* --- Obstáculos (Inalterado) --- */
+
+.obstacle {
+    position: absolute;
+    bottom: var(--ground-height);
+    right: 0;
+    width: var(--obstacle-size);
+    height: var(--obstacle-size);
+    background-color: #f44336; 
+    border: 2px solid #b71c1c;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+    font-weight: bold;
+    z-index: 20;
+    will-change: transform;
+}
+
+/* Novo: Obstáculo Voador */
+.obstacle-flying {
+    /* Posiciona o obstáculo no ar, na altura da cabeça do personagem em pé */
+    bottom: calc(var(--ground-height) + (var(--player-frame-size) / 2) + 10px);
+    
+    /* Muda a cor para diferenciar visualmente */
+    background-color: #ff9800; /* Laranja */
+    border-color: #e65100;
+    
+    /* Adiciona um texto para indicar a ação */
+    content: 'DUCK!';
+}
+
+/* --- Placar e Cenário de Vitória (Inalterado) --- */
+
+#score {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.2em;
+    color: var(--main-color);
+    z-index: 30;
+}
+
+#victory-scene {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff8e1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 100;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.hidden {
+    display: none!important;
+}
+
+.espetinho {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 20px;
+}

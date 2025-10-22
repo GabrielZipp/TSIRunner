@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BBQ Runner: 100 Pontos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div id="game-container">
+        
+        <div id="background-scroll" class="background-scroll"></div>
+
+        <div id="score">Pontos: 0 / 100</div>
+
+        <div id="ground"></div>
+
+        <div id="player" class="player-run"></div>
+        
+    </div>
+
+    <div id="victory-scene" class="hidden">
+        <h2>🏆 Missão Épica Cumprida! A Lenda do BBQ Runner! 🏆 </h2>
+        <p>Você enfrentou os TCCs e os códigos aleatórios. O churrasco é seu por direito!</p>
+        
+        <div class="churrasco-container">
+            <div class="player-relax">
+                <p>🍖 Churrasco merecido e lendário! </p>
+            </div>
+        </div>
+
+        <button onclick="window.location.reload()">Jogar Novamente</button>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
