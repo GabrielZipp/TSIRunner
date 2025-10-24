@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const GROUND_Y = 20; 
     const GAME_WIDTH = 800; 
     const SCORE_INCREMENT = 6;
-    const MAX_SCORE = 100; // ALTERAÇÃO 1: Aumentado de 50 para 100
+    const MAX_SCORE = 1000; // ALTERAÇÃO 1: Aumentado de 50 para 100
     
     let isJumping = false;
     let isDucking = false;
